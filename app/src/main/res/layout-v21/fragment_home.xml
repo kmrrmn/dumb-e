@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent" >
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
+        android:id="@+id/app_bar1"
+        android:background="@drawable/dumb"
+        android:layout_height="150dp">
+
+    </android.support.design.widget.AppBarLayout>
+    <android.support.v4.widget.NestedScrollView
+        android:fitsSystemWindows="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:fitsSystemWindows="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="Received Data"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:gravity="center_vertical"
+                android:background="@android:color/holo_purple"/>
+            <TextView
+                android:textStyle="normal"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="30dp"
+                android:id="@+id/receive"
+                android:textColor="@android:color/holo_red_dark"
+                android:layout_width="match_parent"
+                android:textIsSelectable="true"
+                android:layout_height="wrap_content"
+                android:text="hii "/>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/speak"
+        android:fitsSystemWindows="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_speaker"
+        app:layout_anchor="@id/app_bar1"
+        app:layout_anchorGravity="end|bottom" />
+
+    <FrameLayout
+        android:elevation="7dp"
+        android:id="@+id/send_bottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        app:behavior_hideable="false"
+        android:background="@color/cardview_light_background"
+        app:behavior_peekHeight="50dp"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        android:orientation="horizontal">
+
+
+        <FrameLayout
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/input_recycle"  />
+
+            <android.support.v7.widget.CardView
+                android:layout_margin="20dp"
+                android:layout_gravity="bottom|start"
+                android:layout_width="200dp"
+                android:background="@drawable/cardshape"
+                android:layout_height="60dp"
+                android:padding="10dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/data"
+                    android:hint="Write"
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </android.support.v7.widget.CardView>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/send"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_send"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:onClick="send"
+                app:elevation="7dp" />
+
+        </FrameLayout>
+        <TextView
+            android:id="@+id/senddata"
+            android:text=" Send Data"
+            android:background="@android:color/holo_purple"
+            android:gravity="center|center_vertical"
+            android:textStyle="bold"
+            android:layout_gravity="top"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:elevation="9dp"
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        android:background="@drawable/shape"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="Select Device"
+            android:padding="15dp"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="#fff" />
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
