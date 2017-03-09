@@ -177,12 +177,14 @@ public class MainActivity extends AppCompatActivity   {
                 @Override
                 public void onPageScrollStateChanged(int state) {
                 }
+
             });
 
             mFrontLay.setVisibility(View.VISIBLE);
             SharedPreferences.Editor edit = preferences.edit();
             edit.putString(Constant.PREF_IS_FIRSTTIME, Constant.YES);
             edit.apply();
+
         }
 
     }
