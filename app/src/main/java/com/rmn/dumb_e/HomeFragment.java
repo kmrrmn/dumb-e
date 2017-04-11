@@ -44,6 +44,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.CharArrayReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -69,7 +71,6 @@ public class HomeFragment extends Fragment implements DeviceListDialog.deviceLis
     DeviceListDialog deviceListDialog;
     TextToSpeech t1;
     int nodatasend = 0;
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private TextInputEditText msgView;
@@ -84,6 +85,7 @@ public class HomeFragment extends Fragment implements DeviceListDialog.deviceLis
     private int REQUEST_ENABLE_BT = 1;
     private DeviceAdapter mDeviceAdapter;
     private BottomSheetBehavior mBottomSheetBehavior, mSendBottomSheetBehavior;
+
 
     public static HomeFragment newInstance(String param1) {
             HomeFragment fragment = new HomeFragment();
@@ -107,18 +109,29 @@ public class HomeFragment extends Fragment implements DeviceListDialog.deviceLis
                              Bundle savedInstanceState) {
 
         Log.e("fer", "dsd");
-
+        t1 = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.ERROR) {
+                    Log.e("TextToSpeech", "----------------------" + "nice");
+                    t1.setLanguage(Locale.UK);
+                    t1.setPitch(0.7f);
+                } else
+                    Log.e("TextToSpeech", "----------------------" + "error");
+            }
+        });
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         fab = (FloatingActionButton) view.findViewById(R.id.speak);
+        receiveView = (TextView) view.findViewById(R.id.receive);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                t1.speak(receiveView.getText().toString(), TextToSpeech.ERROR_NETWORK, null);
-            }
-        });
+          t1.speak(receiveView.getText().toString(), TextToSpeech.ERROR_NETWORK, null);
 
-        receiveView = (TextView) view.findViewById(R.id.receive);
-        mSentDataRecyclerView = (RecyclerView) view.findViewById(R.id.input_recycle);
+             }
+         });
+
+         mSentDataRecyclerView = (RecyclerView) view.findViewById(R.id.input_recycle);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setAutoMeasureEnabled(true);
         mSentDataRecyclerView.setLayoutManager(linearLayoutManager);
@@ -140,21 +153,21 @@ public class HomeFragment extends Fragment implements DeviceListDialog.deviceLis
         return view;
     }
 
+//int index,lastSpeechIndex=0;
+//    public void setValueAt( ){
+//        StringBuilder sb=new StringBuilder(receiveView.getText().toString());
+//         index= sb.indexOf(".",lastSpeechIndex);
+//        String  speak=sb.substring(lastSpeechIndex+1,index).toString();
+//        sb.setCharAt(index,' ');
+//        receiveView.setText(sb.toString());
+//        t1.speak(speak.toString(), TextToSpeech.ERROR_NETWORK, null);
+//        index=lastSpeechIndex;
+//    }
 
     @Override
     public void onStart() {
         super.onStart();
-        t1 = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status != TextToSpeech.ERROR) {
-                    Log.e("TextToSpeech", "----------------------" + "nice");
-                    t1.setLanguage(Locale.UK);
-                    t1.setPitch(0.7f);
-                } else
-                    Log.e("TextToSpeech", "----------------------" + "error");
-            }
-        });
+
     }
 
     public void onButtonPressed(Uri uri) {
@@ -451,10 +464,12 @@ public class HomeFragment extends Fragment implements DeviceListDialog.deviceLis
         private BluetoothSocket connectedBluetoothSocket = null;
         private InputStream connectedInputStream = null;
         private OutputStream connectedOutputStream = null;
+        int lastSpeechIndex=0,index;
 
         @Override
         protected Void doInBackground(BluetoothSocket... bluetoothSockets) {
 
+            char specialChar='.';
             connectedBluetoothSocket = bluetoothSockets[0];
             byte[] buffer = new byte[1024];
             int bytes;
@@ -476,7 +491,8 @@ public class HomeFragment extends Fragment implements DeviceListDialog.deviceLis
                 try {
                     assert connectedInputStream != null;
                     bytes = connectedInputStream.read(buffer);
-                    final String strReceived = new String(buffer, 0, bytes);
+                     final String strReceived = new String(buffer, 0, bytes);
+
                     final String msgReceived = String.valueOf(bytes) +
                             " bytes received:\n"
                             + strReceived;
@@ -485,7 +501,8 @@ public class HomeFragment extends Fragment implements DeviceListDialog.deviceLis
                         @Override
                         public void run() {
                            // Toast.makeText(getContext(), msgReceived, Toast.LENGTH_LONG).show();
-                            receiveView.setText(receiveView.getText().toString() + strReceived);
+                            //setValueAt( strReceived);
+                            receiveView.setText(receiveView.getText().toString()+strReceived);
                         }
                     });
 
@@ -516,6 +533,18 @@ public class HomeFragment extends Fragment implements DeviceListDialog.deviceLis
                 e.printStackTrace();
             }
         }
+
+
+//        public void setValueAt(String received){
+//            StringBuilder sb=new StringBuilder(receiveView.getText().toString());
+//            sb.append(received);
+//            index= sb.indexOf(".",lastSpeechIndex);
+//            String  speak=sb.substring(lastSpeechIndex+1,index).toString();
+//            sb.setCharAt(index,' ');
+//            receiveView.setText(sb.toString());
+//            t1.speak(speak, TextToSpeech.ERROR_NETWORK, null);
+//            index=lastSpeechIndex;
+//        }
 
         public void read(byte[] buffer) {
             try {

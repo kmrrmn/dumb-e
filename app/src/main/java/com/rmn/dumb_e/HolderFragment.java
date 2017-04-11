@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -40,9 +41,9 @@ public class HolderFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     View rootView;
     TextView textView;
-    int i = 0;
+    int i = 0,pageNo=0;
     RelativeLayout mback;
-
+ImageView image;
     public static HolderFragment newInstance(int sectionNumber) {
         HolderFragment fragment = new HolderFragment();
         Bundle args = new Bundle();
@@ -56,10 +57,7 @@ public class HolderFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments().getInt(ARG_SECTION_NUMBER) == 4) {
-
-
-        }
+        pageNo=getArguments().getInt(ARG_SECTION_NUMBER) ;
     }
 
      @Override
@@ -69,13 +67,21 @@ public class HolderFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
         textView = (TextView) rootView.findViewById(R.id.section_label);
         mback = (RelativeLayout) rootView.findViewById(R.id.back);
+image=(ImageView)rootView.findViewById(R.id.image);
 
-        if (getArguments().getInt(ARG_SECTION_NUMBER) != 4) {
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-        } else {
-            mback.setBackgroundColor(Color.parseColor("#ffffff"));
-        }
-        return rootView;
+        if (pageNo==1) {
+            image.setImageResource(R.drawable.oie_trans);
+            textView.setText("For dumb person");
+        } else if (pageNo==2) {
+            image.setImageResource(R.drawable.oie_transparent1);
+
+            textView.setText("Receives data from arduino using bluetooth");
+        }   else{
+            image.setImageResource(R.drawable.oie_transparent);
+            textView.setText("Converts text to speech");
+        }         mback.setBackgroundColor(Color.parseColor("#ffffff"));
+
+         return rootView;
     }
 
     @Override
